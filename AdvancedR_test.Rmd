@@ -9,7 +9,7 @@ library(shiny)
 library(ggplot2)
 library(tidyverse)
 library(shiny)
-runApp("C:/FNP/App")
+#runApp("C:/FNP/App")
 ```
 
 ```{r setup, include=FALSE}
