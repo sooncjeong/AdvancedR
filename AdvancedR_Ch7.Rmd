@@ -1,0 +1,118 @@
+---
+title: "AdvancedR_Ch7"
+author: "Soon-Chun Jeong"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r 7.2 Environment basics}
+library(rlang)
+e1 <- env(
+  a = FALSE,
+  b = "a",
+  c = 2.3,
+  d = 1:3,
+)
+e1$d <- e1
+env_print(e1)
+env_names(e1)
+
+identical(global_env(), current_env())
+e2a <- env(d = 4, e = 5)
+e2b <- env(e2a, a = 1, b = 2, c = 3)
+env_parent(e2b)
+env_parent(e2a)
+e2c <- env(empty_env(), d = 4, e = 5)
+e2d <- env(e2c, a = 1, b = 2, c = 3)
+env_parents(e2b)
+env_parents(e2d)
+env_parents(e2b, last = empty_env())
+
+#super assignment
+x <- 0
+f <- function() {
+  x <<- 1
+}
+f()
+x
+e3 <- env(x = 1, y = 2)
+e3$x
+e3$z <- 3
+e3[["z"]]
+env_poke(e3, "a", 100)
+e3$a
+```
+```{r 7.2.7 Excercises}
+# 1. List three ways in which an environment differs from a list.
+# Answer: Every name is unique; the names are not ordered; an environment has a parent
+# 2. Create an environment as illustrated by this picture.
+e1 <- env()
+e1$loop <- e1
+lobstr::ref(e1)
+
+#3. Create a pair of environments as illustrated by this picture.
+e1 <- env()
+e2 <- env()
+
+e1$loop   <- e2
+e2$dedoop <- e1
+
+lobstr::ref(e1)
+lobstr::ref(e2)
+
+#4. Explain why e[[1]] and e[c("a", "b")] don’t make sense when e is an environment.
+# number and vector is not accepted
+
+#6. What does this function do? How does it differ from <<- and why might you prefer it?
+rebind <- function(name, value, env = caller_env()) {
+  if (identical(env, empty_env())) {
+    stop("Can't find `", name, "`", call. = FALSE)
+  } else if (env_has(env, name)) {
+    env_poke(env, name, value)
+  } else {
+    rebind(name, value, env_parent(env))
+  }
+}
+#rebind("a", 10)
+
+a <- 5
+rebind("a", 10)
+a
+
+rebind <<- function(name, value, env = caller_env()) {
+  if (identical(env, empty_env())) {
+    stop("Can't find `", name, "`", call. = FALSE)
+  } else if (env_has(env, name)) {
+    env_poke(env, name, value)
+  } else {
+    rebind(name, value, env_parent(env))
+  }
+}
+rebind("a", 10)
+a #got 10 at this stage
+
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=TRUE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
