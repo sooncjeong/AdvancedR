@@ -60,7 +60,7 @@ lobstr::ref(e1)
 lobstr::ref(e2)
 
 #4. Explain why e[[1]] and e[c("a", "b")] don’t make sense when e is an environment.
-# number and vector is not accepted
+# number and vector are not accepted
 
 #6. What does this function do? How does it differ from <<- and why might you prefer it?
 rebind <- function(name, value, env = caller_env()) {
@@ -89,6 +89,92 @@ rebind <<- function(name, value, env = caller_env()) {
 }
 rebind("a", 10)
 a #got 10 at this stage
+
+getwd()
+
+```
+
+```{r} 7.3 Recursing over environments
+where <- function(name, env = caller_env()) {
+  if (identical(env, empty_env())) {
+    # Base case
+    stop("Can't find ", name, call. = FALSE)
+  } else if (env_has(env, name)) {
+    # Success case
+    env
+  } else {
+    # Recursive case
+    where(name, env_parent(env))
+  }
+}
+where("yyy")
+#> Error: Can't find yyy
+
+x <- 5
+where("x")
+#> <environment: R_GlobalEnv>
+
+where("mean")
+#> <environment: base>
+e4a <- env(empty_env(), a = 1, b = 2)
+e4b <- env(e4a, x = 10, a = 11)
+where("a", e4b)
+f <- function(..., env = caller_env()) {
+  if (identical(env, empty_env())) {
+    # base case
+  } else if (success) {
+    # success case
+  } else {
+    # recursive case
+    f(..., env = env_parent(env))
+  }
+}
+f2 <- function(..., env = caller_env()) {
+  while (!identical(env, empty_env())) {
+    if (success) {
+      # success case
+      return()
+    }
+    # inspect parent
+    env <- env_parent(env)
+  }
+
+  # base case
+}
+```
+```{r} 7.3.1 Exercises
+# 1. Modify where() to return all environments that contain a binding for name. Carefully think through what type of object the function will need to return.
+where <- function(name, env = caller_env()) {
+  if (identical(env, empty_env())) {
+    # Base case
+    stop("Can't find `", name, "`.", call. = FALSE)
+  } else if (env_has(env, name)) {
+    # Success case
+    env
+  } else {
+    # Recursive case
+    where(name, env_parent(env))
+  }
+}
+# 2. fget
+fget <- function(name, env = caller_env(), inherits = TRUE) {
+  # Base case
+  if (env_has(env, name)) {
+    obj <- env_get(env, name)
+
+    if (is.function(obj)) {
+      return(obj)
+    }
+  }
+
+  if (identical(env, emptyenv()) || !inherits) {
+    stop("Could not find a function called \"", name, "\".",
+      call. = FALSE
+    )
+  }
+  
+```
+```{r} 7.4 Special environments
 
 
 ```

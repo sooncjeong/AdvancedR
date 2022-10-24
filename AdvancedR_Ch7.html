@@ -11,7 +11,7 @@
 
 <meta name="author" content="Soon-Chun Jeong" />
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-10-24" />
 
 <title>AdvancedR_Ch7</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">AdvancedR_Ch7</h1>
 <h4 class="author">Soon-Chun Jeong</h4>
-<h4 class="date">2022-10-22</h4>
+<h4 class="date">2022-10-24</h4>
 
 </div>
 
@@ -366,7 +366,7 @@ e1 &lt;- env(
 )
 e1$d &lt;- e1
 env_print(e1)</code></pre>
-<pre><code>## &lt;environment: 0x000001b5c20c6050&gt;
+<pre><code>## &lt;environment: 0x000001ee86661c98&gt;
 ## Parent: &lt;environment: global&gt;
 ## Bindings:
 ## • a: &lt;lgl&gt;
@@ -380,19 +380,19 @@ env_print(e1)</code></pre>
 <pre class="r"><code>e2a &lt;- env(d = 4, e = 5)
 e2b &lt;- env(e2a, a = 1, b = 2, c = 3)
 env_parent(e2b)</code></pre>
-<pre><code>## &lt;environment: 0x000001b5c3882d20&gt;</code></pre>
+<pre><code>## &lt;environment: 0x000001ee87db8b08&gt;</code></pre>
 <pre class="r"><code>env_parent(e2a)</code></pre>
 <pre><code>## &lt;environment: R_GlobalEnv&gt;</code></pre>
 <pre class="r"><code>e2c &lt;- env(empty_env(), d = 4, e = 5)
 e2d &lt;- env(e2c, a = 1, b = 2, c = 3)
 env_parents(e2b)</code></pre>
-<pre><code>## [[1]]   &lt;env: 0x000001b5c3882d20&gt;
+<pre><code>## [[1]]   &lt;env: 0x000001ee87db8b08&gt;
 ## [[2]] $ &lt;env: global&gt;</code></pre>
 <pre class="r"><code>env_parents(e2d)</code></pre>
-<pre><code>## [[1]]   &lt;env: 0x000001b5c39e1230&gt;
+<pre><code>## [[1]]   &lt;env: 0x000001ee87f08d88&gt;
 ## [[2]] $ &lt;env: empty&gt;</code></pre>
 <pre class="r"><code>env_parents(e2b, last = empty_env())</code></pre>
-<pre><code>##  [[1]]   &lt;env: 0x000001b5c3882d20&gt;
+<pre><code>##  [[1]]   &lt;env: 0x000001ee87db8b08&gt;
 ##  [[2]] $ &lt;env: global&gt;
 ##  [[3]] $ &lt;env: package:rlang&gt;
 ##  [[4]] $ &lt;env: package:stats&gt;
@@ -427,8 +427,8 @@ e3$a</code></pre>
 e1 &lt;- env()
 e1$loop &lt;- e1
 lobstr::ref(e1)</code></pre>
-<pre><code>## █ [1:0x1b5c64705c8] &lt;env&gt; 
-## └─loop = [1:0x1b5c64705c8]</code></pre>
+<pre><code>## █ [1:0x1ee8a81acb8] &lt;env&gt; 
+## └─loop = [1:0x1ee8a81acb8]</code></pre>
 <pre class="r"><code>#3. Create a pair of environments as illustrated by this picture.
 e1 &lt;- env()
 e2 &lt;- env()
@@ -437,15 +437,15 @@ e1$loop   &lt;- e2
 e2$dedoop &lt;- e1
 
 lobstr::ref(e1)</code></pre>
-<pre><code>## █ [1:0x1b5c6927ce0] &lt;env&gt; 
-## └─loop = █ [2:0x1b5c6989220] &lt;env&gt; 
-##          └─dedoop = [1:0x1b5c6927ce0]</code></pre>
+<pre><code>## █ [1:0x1ee8ace2510] &lt;env&gt; 
+## └─loop = █ [2:0x1ee8ad41920] &lt;env&gt; 
+##          └─dedoop = [1:0x1ee8ace2510]</code></pre>
 <pre class="r"><code>lobstr::ref(e2)</code></pre>
-<pre><code>## █ [1:0x1b5c6989220] &lt;env&gt; 
-## └─dedoop = █ [2:0x1b5c6927ce0] &lt;env&gt; 
-##            └─loop = [1:0x1b5c6989220]</code></pre>
+<pre><code>## █ [1:0x1ee8ad41920] &lt;env&gt; 
+## └─dedoop = █ [2:0x1ee8ace2510] &lt;env&gt; 
+##            └─loop = [1:0x1ee8ad41920]</code></pre>
 <pre class="r"><code>#4. Explain why e[[1]] and e[c(&quot;a&quot;, &quot;b&quot;)] don’t make sense when e is an environment.
-# number and vector is not accepted
+# number and vector are not accepted
 
 #6. What does this function do? How does it differ from &lt;&lt;- and why might you prefer it?
 rebind &lt;- function(name, value, env = caller_env()) {
@@ -475,16 +475,67 @@ a</code></pre>
 rebind(&quot;a&quot;, 10)
 a #got 10 at this stage</code></pre>
 <pre><code>## [1] 10</code></pre>
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting
-syntax for authoring HTML, PDF, and MS Word documents. For more details
-on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be
-generated that includes both content as well as the output of any
-embedded R code chunks within the document. You can embed an R code
-chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;C:/R_Github/AdvancedR&quot;</code></pre>
+<p>```{r} 7.3 Recursing over environments where &lt;- function(name, env
+= caller_env()) { if (identical(env, empty_env())) { # Base case
+stop(“Can’t find”, name, call. = FALSE) } else if (env_has(env, name)) {
+# Success case env } else { # Recursive case where(name,
+env_parent(env)) } } where(“yyy”) #&gt; Error: Can’t find yyy</p>
+<p>x &lt;- 5 where(“x”) #&gt; &lt;environment: R_GlobalEnv&gt;</p>
+<p>where(“mean”) #&gt; &lt;environment: base&gt; e4a &lt;-
+env(empty_env(), a = 1, b = 2) e4b &lt;- env(e4a, x = 10, a = 11)
+where(“a”, e4b) f &lt;- function(…, env = caller_env()) { if
+(identical(env, empty_env())) { # base case } else if (success) { #
+success case } else { # recursive case f(…, env = env_parent(env)) } }
+f2 &lt;- function(…, env = caller_env()) { while (!identical(env,
+empty_env())) { if (success) { # success case return() } # inspect
+parent env &lt;- env_parent(env) }</p>
+<p># base case }</p>
+<pre><code>```{r} 7.3.1 Exercises
+# 1. Modify where() to return all environments that contain a binding for name. Carefully think through what type of object the function will need to return.
+where &lt;- function(name, env = caller_env()) {
+  if (identical(env, empty_env())) {
+    # Base case
+    stop(&quot;Can&#39;t find `&quot;, name, &quot;`.&quot;, call. = FALSE)
+  } else if (env_has(env, name)) {
+    # Success case
+    env
+  } else {
+    # Recursive case
+    where(name, env_parent(env))
+  }
+}
+# 2. fget
+fget &lt;- function(name, env = caller_env(), inherits = TRUE) {
+  # Base case
+  if (env_has(env, name)) {
+    obj &lt;- env_get(env, name)
+
+    if (is.function(obj)) {
+      return(obj)
+    }
+  }
+
+  if (identical(env, emptyenv()) || !inherits) {
+    stop(&quot;Could not find a function called \&quot;&quot;, name, &quot;\&quot;.&quot;,
+      call. = FALSE
+    )
+  }
+  </code></pre>
+<p>```{r} 7.4 Special environments</p>
+<pre><code>
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;http://rmarkdown.rstudio.com&gt;.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```r
+summary(cars)</code></pre>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
 ##  1st Qu.:12.0   1st Qu.: 26.00  
@@ -492,7 +543,6 @@ chunk like this:</p>
 ##  Mean   :15.4   Mean   : 42.98  
 ##  3rd Qu.:19.0   3rd Qu.: 56.00  
 ##  Max.   :25.0   Max.   :120.00</code></pre>
-</div>
 <div id="including-plots" class="section level2">
 <h2>Including Plots</h2>
 <p>You can also embed plots, for example:</p>
