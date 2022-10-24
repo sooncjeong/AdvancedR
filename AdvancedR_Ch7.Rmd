@@ -175,6 +175,14 @@ fget <- function(name, env = caller_env(), inherits = TRUE) {
   
 ```
 ```{r} 7.4 Special environments
+search()
+search_envs()
+base_env()
+
+#7.4.5 Exercises
+1. How is search_envs() different from env_parents(global_env())?
+#search_envs() returns all the environments on the search path
+# env_parents(global_env()) will list all the ancestors of the global environment
 
 
 ```
