@@ -366,7 +366,7 @@ e1 &lt;- env(
 )
 e1$d &lt;- e1
 env_print(e1)</code></pre>
-<pre><code>## &lt;environment: 0x000001ee86661c98&gt;
+<pre><code>## &lt;environment: 0x000002c1cec91d18&gt;
 ## Parent: &lt;environment: global&gt;
 ## Bindings:
 ## • a: &lt;lgl&gt;
@@ -380,19 +380,19 @@ env_print(e1)</code></pre>
 <pre class="r"><code>e2a &lt;- env(d = 4, e = 5)
 e2b &lt;- env(e2a, a = 1, b = 2, c = 3)
 env_parent(e2b)</code></pre>
-<pre><code>## &lt;environment: 0x000001ee87db8b08&gt;</code></pre>
+<pre><code>## &lt;environment: 0x000002c1d03f9998&gt;</code></pre>
 <pre class="r"><code>env_parent(e2a)</code></pre>
 <pre><code>## &lt;environment: R_GlobalEnv&gt;</code></pre>
 <pre class="r"><code>e2c &lt;- env(empty_env(), d = 4, e = 5)
 e2d &lt;- env(e2c, a = 1, b = 2, c = 3)
 env_parents(e2b)</code></pre>
-<pre><code>## [[1]]   &lt;env: 0x000001ee87db8b08&gt;
+<pre><code>## [[1]]   &lt;env: 0x000002c1d03f9998&gt;
 ## [[2]] $ &lt;env: global&gt;</code></pre>
 <pre class="r"><code>env_parents(e2d)</code></pre>
-<pre><code>## [[1]]   &lt;env: 0x000001ee87f08d88&gt;
+<pre><code>## [[1]]   &lt;env: 0x000002c1d054fe68&gt;
 ## [[2]] $ &lt;env: empty&gt;</code></pre>
 <pre class="r"><code>env_parents(e2b, last = empty_env())</code></pre>
-<pre><code>##  [[1]]   &lt;env: 0x000001ee87db8b08&gt;
+<pre><code>##  [[1]]   &lt;env: 0x000002c1d03f9998&gt;
 ##  [[2]] $ &lt;env: global&gt;
 ##  [[3]] $ &lt;env: package:rlang&gt;
 ##  [[4]] $ &lt;env: package:stats&gt;
@@ -427,8 +427,8 @@ e3$a</code></pre>
 e1 &lt;- env()
 e1$loop &lt;- e1
 lobstr::ref(e1)</code></pre>
-<pre><code>## █ [1:0x1ee8a81acb8] &lt;env&gt; 
-## └─loop = [1:0x1ee8a81acb8]</code></pre>
+<pre><code>## █ [1:0x2c1d3004b18] &lt;env&gt; 
+## └─loop = [1:0x2c1d3004b18]</code></pre>
 <pre class="r"><code>#3. Create a pair of environments as illustrated by this picture.
 e1 &lt;- env()
 e2 &lt;- env()
@@ -437,13 +437,13 @@ e1$loop   &lt;- e2
 e2$dedoop &lt;- e1
 
 lobstr::ref(e1)</code></pre>
-<pre><code>## █ [1:0x1ee8ace2510] &lt;env&gt; 
-## └─loop = █ [2:0x1ee8ad41920] &lt;env&gt; 
-##          └─dedoop = [1:0x1ee8ace2510]</code></pre>
+<pre><code>## █ [1:0x2c1d34ca560] &lt;env&gt; 
+## └─loop = █ [2:0x2c1d35317b0] &lt;env&gt; 
+##          └─dedoop = [1:0x2c1d34ca560]</code></pre>
 <pre class="r"><code>lobstr::ref(e2)</code></pre>
-<pre><code>## █ [1:0x1ee8ad41920] &lt;env&gt; 
-## └─dedoop = █ [2:0x1ee8ace2510] &lt;env&gt; 
-##            └─loop = [1:0x1ee8ad41920]</code></pre>
+<pre><code>## █ [1:0x2c1d35317b0] &lt;env&gt; 
+## └─dedoop = █ [2:0x2c1d34ca560] &lt;env&gt; 
+##            └─loop = [1:0x2c1d35317b0]</code></pre>
 <pre class="r"><code>#4. Explain why e[[1]] and e[c(&quot;a&quot;, &quot;b&quot;)] don’t make sense when e is an environment.
 # number and vector are not accepted
 
