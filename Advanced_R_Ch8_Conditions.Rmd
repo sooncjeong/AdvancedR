@@ -5,9 +5,17 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 ```{r}
-#Write a wrapper around file.remove() that throws an error if the file to be deleted does not exist.
-
-
+#1. Write a wrapper around file.remove() that throws an error if the file to be deleted does not exist.
+saveRDS(mtcars, "test.rds")
+file.remove("test.rds")
+file.remove("test.rds")
+file.remove("test.rds", call.=FALSE)
+# Is there any way to use stop or abort?
+# 2. What does the appendLF argument to message() do? How is it related to cat()?
+??appendLF
+message("Hixxxxxxxxxxx", "yyyyyyyyyyy", appendLF = TRUE)
+message("Hixxxxxxxxxx", "yyyyyyyy", appendLF = FALSE)
+# newline appended, line breaks??
 ```
 
 ```{r setup, include=FALSE}

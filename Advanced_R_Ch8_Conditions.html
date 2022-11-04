@@ -357,7 +357,29 @@ display: none;
 </div>
 
 
-<pre class="r"><code>#Write a wrapper around file.remove() that throws an error if the file to be deleted does not exist.</code></pre>
+<pre class="r"><code>#1. Write a wrapper around file.remove() that throws an error if the file to be deleted does not exist.
+saveRDS(mtcars, &quot;test.rds&quot;)
+file.remove(&quot;test.rds&quot;)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>file.remove(&quot;test.rds&quot;)</code></pre>
+<pre><code>## Warning in file.remove(&quot;test.rds&quot;): cannot remove file &#39;test.rds&#39;, reason &#39;No
+## such file or directory&#39;</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>file.remove(&quot;test.rds&quot;, call.=FALSE)</code></pre>
+<pre><code>## Warning in file.remove(&quot;test.rds&quot;, call. = FALSE): cannot remove file
+## &#39;test.rds&#39;, reason &#39;No such file or directory&#39;</code></pre>
+<pre><code>## Warning in file.remove(&quot;test.rds&quot;, call. = FALSE): cannot remove file &#39;FALSE&#39;,
+## reason &#39;No such file or directory&#39;</code></pre>
+<pre><code>## [1] FALSE FALSE</code></pre>
+<pre class="r"><code># Is there any way to use stop or abort?
+# 2. What does the appendLF argument to message() do? How is it related to cat()?
+??appendLF</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>message(&quot;Hixxxxxxxxxxx&quot;, &quot;yyyyyyyyyyy&quot;, appendLF = TRUE)</code></pre>
+<pre><code>## Hixxxxxxxxxxxyyyyyyyyyyy</code></pre>
+<pre class="r"><code>message(&quot;Hixxxxxxxxxx&quot;, &quot;yyyyyyyy&quot;, appendLF = FALSE)</code></pre>
+<pre><code>## Hixxxxxxxxxxyyyyyyyy</code></pre>
+<pre class="r"><code># newline appended, line breaks??</code></pre>
 <div id="r-markdown" class="section level2">
 <h2>R Markdown</h2>
 <p>This is an R Markdown document. Markdown is a simple formatting
