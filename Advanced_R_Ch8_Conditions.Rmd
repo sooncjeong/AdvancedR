@@ -81,6 +81,105 @@ rlang::catch_cnd()
 
 
 ```
+```{r}
+## 8.5.1. Inside a package, it’s occasionally useful to check that a package is installed before using it. Write a function that checks if a package is installed (with requireNamespace("pkg", quietly = FALSE)) and if not, throws a custom condition that includes the package name in the metadata.
+library(rlang)
+library(testthat)
+requireNamespace
+
+check_installed <- function(package) {
+  if (!requireNamespace(package, quietly = FALSE)) {
+    abort(
+      "error_pkg_not_found",
+      message = paste0("package '", package, "' not installed."),
+      package = package
+    )
+  }
+
+  TRUE
+}
+check_installed("ggplot2")
+check_installed("A3")
+check_installed("AATtools")
+## When a package is intalled manually, pre-requisite (dependent) package is sometimes required.
+
+## 8.5.2. Inside a package you often need to stop with an error when something is not right. Other packages that depend on your package might be tempted to check these errors in their unit tests. How could you help these packages to avoid relying on the error message which is part of the user interface rather than the API and might change without notice?
+
+#transfer error message to dependent packages
+
+#8.6.1 Create suppressConditions() that works like suppressMessages() and suppressWarnings() but suppresses everything. Think carefully about how you should handle errors.
+suppressErrors <- function(expr) {
+  tryCatch(
+    error = function(cnd) invisible(cnd),
+    interrupt = function(cnd) {
+      stop("Terminated by the user.",
+        call. = FALSE
+      )
+    },
+    expr
+  )
+}
+suppressConditions <- function(expr) {
+  suppressErrors(suppressWarnings(suppressMessages(expr)))
+}
+error_obj <- suppressConditions({
+  message("message")
+  warning("warning")
+  abort("error")
+})
+error_obj
+## key is hiding error
+message2error <- function(code) {
+  withCallingHandlers(code, message = function(e) stop(e))
+}
+message2error <- function(code) {
+  tryCatch(code, message = function(e) stop(e))
+}
+message2error1 <- function(code) {
+  withCallingHandlers(code, message = function(e) stop("error"))
+}
+message2error1({1;  message("hidden error"); NULL})
+traceback()
+message2error2 <- function(code) {
+  tryCatch(code, message = function(e) (stop("error")))
+}
+message2error2({1; stop("hidden error"); NULL})
+traceback()
+##In the solution book, ':hidden error" does not appear
+
+##8.6.3. Q3: How would you modify the catch_cnds() definition if you wanted to recreate the original intermingling of warnings and messages?
+## look at the main text
+
+##8.8.4.  Why is catching interrupts dangerous? Run this code to find out.
+bottles_of_beer <- function(i = 99) {
+  message(
+    "There are ", i, " bottles of beer on the wall, ", 
+    i, " bottles of beer."
+  )
+  while(i > 0) {
+    tryCatch(
+      Sys.sleep(1),
+      interrupt = function(err) {
+        i <<- i - 1
+        if (i > 0) {
+          message(
+            "Take one down, pass it around, ", i, 
+            " bottle", if (i > 1) "s", " of beer on the wall."
+          )
+        }
+      }
+    )
+  }
+  message(
+    "No more bottles of beer on the wall, ", 
+    "no more bottles of beer."
+  )
+}
+bottles_of_beer()
+## I do not know why this is running so long.
+
+
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
